@@ -27,6 +27,7 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig.yaml
           export KUBECONFIG=kubeconfig.yaml
           kubectl config view
+          kubectl config use-context liyi-build-svc-test-admin
       - name: Login to Azure Container Registry
         run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ secrets.ACR_LOGIN_SERVER }} -u ${{ secrets.ACR_USERNAME }} --password-stdin
@@ -35,6 +36,6 @@ jobs:
           curl -L https://github.com/buildpacks-community/kpack-cli/releases/download/v0.13.0/kp-linux-amd64-0.13.0 -o kp
           chmod +x kp
       - name: Upload source code and build image
-        run: ./kp image save spring-petclinic-image --tag yilitest.azurecr.io/app/spring-petclinic --local-path . --builder my-builder --service-account tutorial-service-account
+        run: ./kp image save spring-petclinic-image --tag ${{ secrets.ACR_PASSWORD }}/app/spring-petclinic --local-path . --builder my-builder --service-account tutorial-service-account
       - name: Stream build logs
         run: ./kp build logs spring-petclinic-image -b 1
