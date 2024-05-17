@@ -42,6 +42,4 @@ jobs:
           curl -L https://github.com/buildpacks-community/kpack-cli/releases/download/v0.13.0/kp-linux-amd64-0.13.0 -o kp
           chmod +x kp
       - name: Upload source code and build image
-        run: ./kp image save spring-petclinic-image --tag ${{ secrets.ACR_LOGIN_SERVER }}/app/spring-petclinic:${{ github.sha }} --git https://github.com/${{ github.repository }}.git --git-revision ${{ github.sha }} --builder my-builder --service-account tutorial-service-account
-      - name: Stream build logs
-        run: ./kp build logs spring-petclinic-image -b 1
+        run: ./kp image save spring-petclinic-image --tag ${{ secrets.ACR_LOGIN_SERVER }}/app/spring-petclinic:${{ github.sha }} --git https://github.com/${{ github.repository }}.git --git-revision ${{ github.sha }} --builder my-builder --service-account tutorial-service-account -w
