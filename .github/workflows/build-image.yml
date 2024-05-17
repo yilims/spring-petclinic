@@ -33,18 +33,15 @@ jobs:
         id: set-context
         uses: azure/aks-set-context@v3
         with:
-          resource-group: 'liyitest'
-          cluster-name: 'liyi-build-svc-test'
+          resource-group: '${{ secrets.RESOURCE_GROUP }}'
+          cluster-name: '${{ secrets.CLUSTER_NAME }}'
           admin: 'false'
           use-kubelogin: 'true'
-      - name: Login to Azure Container Registry
-        run: |
-          echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ secrets.ACR_LOGIN_SERVER }} -u ${{ secrets.ACR_USERNAME }} --password-stdin
       - name: install kp
         run: |
           curl -L https://github.com/buildpacks-community/kpack-cli/releases/download/v0.13.0/kp-linux-amd64-0.13.0 -o kp
           chmod +x kp
       - name: Upload source code and build image
-        run: ./kp image save spring-petclinic-image --tag ${{ secrets.ACR_LOGIN_SERVER }}/app/spring-petclinic --local-path . --builder my-builder --service-account tutorial-service-account
+        run: ./kp image save spring-petclinic-image --tag ${{ secrets.ACR_LOGIN_SERVER }}/app/spring-petclinic:${{ github.sha }} --git ${{ github.repository }} --git-revision ${{ github.sha }} --builder my-builder --service-account tutorial-service-account
       - name: Stream build logs
         run: ./kp build logs spring-petclinic-image -b 1
