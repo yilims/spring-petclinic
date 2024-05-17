@@ -19,14 +19,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Kubectl
-        uses: azure/setup-kubectl@v3
-      - name: Login to Kubernetes cluster
-        run: |
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig.yaml
-          export KUBECONFIG=kubeconfig.yaml
-          kubectl config use-context liyi-build-svc-test-admin
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: azure/setup-kubectl@v3
+        name: Setup kubectl
       - name: Setup kubelogin
         uses: azure/use-kubelogin@v1
         with:
@@ -35,8 +33,8 @@ jobs:
         id: set-context
         uses: azure/aks-set-context@v3
         with:
-          resource-group: 'sandbox-rg'
-          cluster-name: 'rbac-cluster'
+          resource-group: 'liyitest'
+          cluster-name: 'liyi-build-svc-test'
           admin: 'false'
           use-kubelogin: 'true'
       - name: Login to Azure Container Registry
