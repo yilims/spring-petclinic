@@ -23,7 +23,6 @@ jobs:
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
       - uses: azure/setup-kubectl@v3
         name: Setup kubectl
       - name: Setup kubelogin
@@ -46,6 +45,6 @@ jobs:
           curl -L https://github.com/buildpacks-community/kpack-cli/releases/download/v0.13.0/kp-linux-amd64-0.13.0 -o kp
           chmod +x kp
       - name: Upload source code and build image
-        run: ./kp image save spring-petclinic-image --tag ${{ secrets.ACR_PASSWORD }}/app/spring-petclinic --local-path . --builder my-builder --service-account tutorial-service-account
+        run: ./kp image save spring-petclinic-image --tag ${{ secrets.ACR_LOGIN_SERVER }}/app/spring-petclinic --local-path . --builder my-builder --service-account tutorial-service-account
       - name: Stream build logs
         run: ./kp build logs spring-petclinic-image -b 1
