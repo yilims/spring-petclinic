@@ -26,7 +26,6 @@ jobs:
         run: |
           echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig.yaml
           export KUBECONFIG=kubeconfig.yaml
-          kubectl config view
           kubectl config use-context liyi-build-svc-test-admin
       - name: Login to Azure Container Registry
         run: |
