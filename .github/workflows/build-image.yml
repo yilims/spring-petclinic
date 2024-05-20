@@ -43,3 +43,12 @@ jobs:
           chmod +x kp
       - name: Build image in Cloud Build Service
         run: ./kp image save ${{ secrets.IMAGE_RESOURCE_NAME }} --tag ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.IMAGE_REPO }}:${{ github.sha }} --git https://github.com/${{ github.repository }}.git --git-revision ${{ github.sha }} --builder ${{ secrets.BUILDER }} --service-account ${{ secrets.SERVICE_ACCOUNT }} -w
+      - name: Deploy to AKS
+        id: deploy-aks
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: 'default'
+          manifests: |
+             deploy/deployment.yaml
+          images: '${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.IMAGE_REPO }}:${{ github.sha }}'
+          pull-images: false 
