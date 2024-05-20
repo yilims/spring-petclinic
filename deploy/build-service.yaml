@@ -1,0 +1,14 @@
+apiVersion: kp.kpack.io/v1alpha1
+kind: DependencyDescriptor
+defaultStack: base
+stores:
+- name: default
+  sources:
+  - image: gcr.io/paketo-buildpacks/java:14.0.0
+  - image: gcr.io/paketo-buildpacks/nodejs:2.2.0
+stacks:
+- name: base
+  buildImage:
+    image: paketobuildpacks/build-jammy-base:0.1.115
+  runImage:
+    image: paketobuildpacks/run-jammy-base:0.1.115

@@ -4,16 +4,10 @@
 name: Rebase Image when Stack and Buildpack Version changes
 
 on:
-  workflow_dispatch:
-    inputs:
-      stackVersion:
-        description: 'Stack Version'
-        required: true
-        default: ''
-      buildpackVersion:
-        description: 'Buildpack Version'
-        required: true
-        default: ''
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -45,7 +39,4 @@ jobs:
           curl -L https://github.com/buildpacks-community/kpack-cli/releases/download/v0.13.0/kp-linux-amd64-0.13.0 -o build-service
           chmod +x build-service
       - name: Update ClusterStack
-        run: ./build-service clusterstack save base --build-image paketobuildpacks/build-jammy-base:${{ github.event.inputs.stackVersion }} --run-image paketobuildpacks/run-jammy-base:${{ github.event.inputs.stackVersion }}
-      - name: Update ClusterStore
-        run: ./build-service clusterstack save base --build-image paketobuildpacks/build-jammy-base:${{ github.event.inputs.buildpackVersion}} --run-image paketobuildpacks/run-jammy-base:${{ github.event.inputs.buildpackVersion }}
-      
+        run: ./build-service import -f deploy/build-service.yaml  --show-changes
