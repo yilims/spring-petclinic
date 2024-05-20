@@ -19,7 +19,7 @@ spec:
         image: mcr.microsoft.com/oss/bitnami/redis:6.0.8
         ports:
         - containerPort: 8080
-          name: spring-petclinic
+          name: http
 
 ---
 apiVersion: v1
