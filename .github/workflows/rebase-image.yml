@@ -38,5 +38,10 @@ jobs:
         run: |
           curl -L https://github.com/buildpacks-community/kpack-cli/releases/download/v0.13.0/kp-linux-amd64-0.13.0 -o build-service
           chmod +x build-service
-      - name: Update ClusterStack
-        run: ./build-service import -f deploy/build-service.yaml  --show-changes
+      - name: Deploy to AKS
+        id: deploy-aks
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: |
+              deploy/stack.yaml
+              deploy/store.yaml
