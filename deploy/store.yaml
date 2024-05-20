@@ -1,4 +1,4 @@
-apiVersion: kp.kpack.io/v1alpha3
+apiVersion: kpack.io/v1alpha2
 kind: ClusterStore
 metadata:
   name: default
