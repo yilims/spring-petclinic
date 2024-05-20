@@ -16,7 +16,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
       - name: spring-petclinic
-        image: mcr.microsoft.com/oss/bitnami/redis:6.0.8
+        image: yilitest.azurecr.io/app/spring-petclinic:7a865843ccc31902d78fcc5b1163568408b4f88b-b1.20240520.014145
         ports:
         - containerPort: 8080
           name: http
