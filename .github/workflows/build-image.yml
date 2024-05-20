@@ -52,3 +52,4 @@ jobs:
              deploy/deployment.yaml
           images: '${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.IMAGE_REPO }}:${{ github.sha }}'
           pull-images: false 
+          imagepullsecrets: 'demo-acr-credentials'
