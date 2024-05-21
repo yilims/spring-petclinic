@@ -1,0 +1,18 @@
+apiVersion: kpack.io/v1alpha2
+kind: ClusterStack
+metadata:
+  name: bionic-base
+spec:
+  buildImage:
+    image: mcr.microsoft.com/azurespringapps/paketobuildpacks/build-bionic-base:2024-0510-0824
+  id: io.buildpacks.stacks.bionic
+  runImage:
+    image: mcr.microsoft.com/azurespringapps/paketobuildpacks/run-bionic-base:2024-0510-0824
+---
+apiVersion: kpack.io/v1alpha2
+kind: ClusterStore
+metadata:
+  name: default
+spec:
+  sources:
+  - image: mcr.microsoft.com/azurespringapps/paketo-buildpacks/java-azure:11.0.0 
