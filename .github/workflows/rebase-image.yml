@@ -1,33 +1,20 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Build source code to container image
+name: Rebase Image when Stack and Buildpack Version changes
 
 on:
   push:
-    branches: [ main ]
+    branches: [ deploy ]
   pull_request:
-    branches: [ main ]
+    branches: [ deploy ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '17' ]
 
     steps:
-      - name: Set up JDK ${{matrix.java}}
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{matrix.java}}
-          distribution: 'adopt'
-          cache: maven
-      - name: Test
-        run: ./mvnw -B package
-      - name: Publish Code Coverage
-        uses: codecov/codecov-action@v2
       - uses: actions/checkout@v4
       - name: Azure Login
         uses: azure/login@v2
@@ -51,15 +38,9 @@ jobs:
         run: |
           curl -L https://github.com/buildpacks-community/kpack-cli/releases/download/v0.13.0/kp-linux-amd64-0.13.0 -o build-service
           chmod +x build-service
-      - name: Build image in Cloud Build Service
-        run: ./build-service image save ${{ secrets.IMAGE_RESOURCE_NAME }} --tag ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.IMAGE_REPO }} --replace-additional-tag ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.IMAGE_REPO }}:${{ github.sha }} --git https://github.com/${{ github.repository }}.git --git-revision ${{ github.sha }} --cluster-builder ${{ secrets.BUILDER }} --service-account ${{ secrets.SERVICE_ACCOUNT }} -w
       - name: Deploy to AKS
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
         with:
-          namespace: 'default'
           manifests: |
-             deploy/deployment.yaml
-          images: '${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.IMAGE_REPO }}:${{ github.sha }}'
-          pull-images: false 
-          imagepullsecrets: 'demo-acr-credentials'
+              deploy/build-service.yaml
