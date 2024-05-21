@@ -5,9 +5,9 @@ name: Rebase Image when Stack and Buildpack Version changes
 
 on:
   push:
-    branches: [ deploy ]
+    branches: [ main ]
   pull_request:
-    branches: [ deploy ]
+    branches: [ main ]
 
 jobs:
   build:
