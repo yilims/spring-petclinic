@@ -38,7 +38,7 @@ jobs:
         run: |
           curl -L https://github.com/buildpacks-community/kpack-cli/releases/download/v0.13.0/kp-linux-amd64-0.13.0 -o build-service
           chmod +x build-service
-      - name: Deploy to AKS
+      - name: Update Stack and Buildpack Version
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
         with:
