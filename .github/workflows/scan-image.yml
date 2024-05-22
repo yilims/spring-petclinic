@@ -1,0 +1,25 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Build source code to container image and deploy to AKS
+
+on:
+  workflow_dispatch:
+    inputs:
+      imageDigest:
+        description: 'Image Digest'
+        required: true
+        default: ''
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan image with Trivy
+        id: scan-image
+        run: |
+          trivy image --format json --output scan-results.json '${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.IMAGE_REPO }}:${{ github.event.inputs.imageDigest }}' --username ${{ secrets.ACR_PASSWORD }} --password ${{ secrets.ACR_PASSWORD }} --timout 20m
+      
