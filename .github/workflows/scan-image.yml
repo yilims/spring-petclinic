@@ -27,7 +27,7 @@ jobs:
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os'
-          severity: 'CRITICAL,HIGH'
+          severity: 'CRITICAL,HIGH,MEDIUM'
         env:
           TRIVY_USERNAME: ${{ secrets.ACR_USER_NAME }} 
           TRIVY_PASSWORD: ${{ secrets.ACR_PASSWORD }}
