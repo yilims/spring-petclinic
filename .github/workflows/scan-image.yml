@@ -27,5 +27,5 @@ jobs:
       - name: Scan image with Trivy
         id: scan-image
         run: |
-          trivy image --format json --output scan-results.json '${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.IMAGE_REPO }}:${{ github.event.inputs.imageDigest }}' --username ${{ secrets.ACR_USER_NAME }} --password ${{ secrets.ACR_PASSWORD }} --timeout 20m
+          trivy image --format json --output scan-results.json '${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.IMAGE_REPO }}@${{ github.event.inputs.imageDigest }}' --username ${{ secrets.ACR_USER_NAME }} --password ${{ secrets.ACR_PASSWORD }} --timeout 20m
       
