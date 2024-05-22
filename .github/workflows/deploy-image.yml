@@ -5,7 +5,8 @@ name: Deploy Image to AKS
 
 on:
   repository_dispatch:
-    types: [webhook]
+    types:
+      - webhook
 env:
   IMAGE_NAME: your-image-name
 
@@ -14,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
       - name: Azure Login
         uses: azure/login@v2
         with:
