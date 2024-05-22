@@ -4,10 +4,10 @@ metadata:
   name: jammy-base
 spec:
   buildImage:
-    image: jetpack4jacr.azurecr.io/paketobuildpacks/build-jammy-base:0.1.115
+    image: jetpack4jacr.azurecr.io/paketobuildpacks/build-jammy-base:0.1.106
   id: io.buildpacks.stacks.jammy
   runImage:
-    image: jetpack4jacr.azurecr.io/paketobuildpacks/run-jammy-base:0.1.115
+    image: jetpack4jacr.azurecr.io/paketobuildpacks/run-jammy-base:0.1.106
 ---
 apiVersion: kpack.io/v1alpha2
 kind: ClusterStore
